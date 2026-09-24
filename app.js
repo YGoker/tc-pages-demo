@@ -6,6 +6,7 @@
   const list = document.getElementById("task-list");
   const emptyState = document.getElementById("empty-state");
   const counter = document.getElementById("task-counter");
+  const clearCompletedBtn = document.getElementById("clear-completed-btn");
 
   function loadTasks() {
     try {
@@ -30,6 +31,8 @@
   function render() {
     const remaining = tasks.filter((task) => !task.completed).length;
     counter.textContent = `${remaining} ${remaining === 1 ? "task" : "tasks"} left`;
+    const hasCompleted = tasks.some((task) => task.completed);
+    clearCompletedBtn.disabled = !hasCompleted;
     list.innerHTML = "";
 
     tasks.forEach((task) => {
@@ -85,12 +88,20 @@
     render();
   }
 
+  function clearCompleted() {
+    tasks = tasks.filter((task) => !task.completed);
+    saveTasks(tasks);
+    render();
+  }
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     addTask(input.value);
     input.value = "";
     input.focus();
   });
+
+  clearCompletedBtn.addEventListener("click", clearCompleted);
 
   render();
 })();

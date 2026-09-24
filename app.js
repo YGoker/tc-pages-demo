@@ -5,6 +5,7 @@
   const input = document.getElementById("task-input");
   const list = document.getElementById("task-list");
   const emptyState = document.getElementById("empty-state");
+  const counter = document.getElementById("task-counter");
 
   function loadTasks() {
     try {
@@ -27,6 +28,8 @@
   let tasks = loadTasks();
 
   function render() {
+    const remaining = tasks.filter((task) => !task.completed).length;
+    counter.textContent = `${remaining} ${remaining === 1 ? "task" : "tasks"} left`;
     list.innerHTML = "";
 
     tasks.forEach((task) => {
